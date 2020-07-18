@@ -12,13 +12,13 @@
 				<?php
 				$table=$do;
 				$db=new DB($table);
-				
+
 //分頁相關參數，包含撈資料庫必須加limit
 $total=$db->count();
 $num=3;
 $pages=ceil($total/$num);
 $now=$_GET['p']??1;
-$start=($now-1)*$pages;
+$start=($now-1)*$num;
 
 				$rows=$db->all([]," LIMIT $start,$num");
 				foreach ($rows as $row) {

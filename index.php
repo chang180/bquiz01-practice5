@@ -1,4 +1,4 @@
-<?php include_once "base.php";?>
+<?php include_once "base.php"; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0040)http://127.0.0.1/test/exercise/collage/? -->
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,7 +21,7 @@
 	</div>
 	<div id="main">
 		<a title="" href="index.php ">
-			<div class="ti" style="background:url('img/<?=$title['name'];?>'); background-size:cover;"></div>
+			<div class="ti" style="background:url('img/<?= $title['name']; ?>'); background-size:cover;"></div>
 			<!--標題-->
 		</a>
 		<div id="ms">
@@ -29,10 +29,30 @@
 				<div id="menuput" class="dbor">
 					<!--主選單放此-->
 					<span class="t botli">主選單區</span>
+<?php
+$menu=$Menu->all(['parent'=>0,'sh'=>1]);
+foreach ($menu as $ma){
+echo "<div class='mainmu'>";
+echo "<a href='".$ma['text']."'>".$ma['name']."</a>";
+
+$chk=$Menu->count(['parent'=>$ma['id']]);
+if($chk>0){
+	$sub=$Menu->all(['parent'=>$ma['id']]);
+	echo "<div class='mw'>";
+	foreach($sub as $su){
+		echo "<div class='mainmu2'>";
+		echo "<a href='".$su['text']."'>".$su['name']."</a>";
+		echo "</div>";
+	}
+	echo "</div>";
+}
+echo "</div>";
+}
+?>
 				</div>
 				<div class="dbor" style="margin:3px; width:95%; height:20%; line-height:100px;">
 					<span class="t">進站總人數 :
-						<?=$total['total'];?> </span>
+						<?= $total['total']; ?> </span>
 				</div>
 			</div>
 			<?php
@@ -46,16 +66,28 @@
 				<button style="width:100%; margin-left:auto; margin-right:auto; margin-top:2px; height:50px;" onclick="lo('?do=login')">管理登入</button>
 				<div style="width:89%; height:480px;" class="dbor">
 					<span class="t botli">校園映象區</span>
+<div class="cent" onclick="pp(1)"><img src="icon/up.jpg"></div>
+<?php
+$img=$Image->all(['sh'=>1]);
+foreach($img as $key=>$im){
+?>
+<div class="cent im" id="ssaa<?=$key;?>"><img src="img/<?=$im['name'];?>" style="width:150px;height:103px;border:3px solid orange;margin:3px"></div>
+<?php }
+?>
+<h3 class="cent" onclick="pp(2)"><img src="icon/dn.jpg"></h3>
+<?php
+
+?>
 					<script>
 						var nowpage = 0,
-							num = 0;
+							num = <?=count($img);?>;
 
 						function pp(x) {
 							var s, t;
 							if (x == 1 && nowpage - 1 >= 0) {
 								nowpage--;
 							}
-							if (x == 2 && (nowpage + 1) * 3 <= num * 1 + 3) {
+							if (x == 2 && (nowpage + 1)*3  <= num * 1 + 3) {
 								nowpage++;
 							}
 							$(".im").hide()
@@ -71,7 +103,7 @@
 		</div>
 		<div style="clear:both;"></div>
 		<div style="width:1024px; left:0px; position:relative; background:#FC3; margin-top:4px; height:123px; display:block;">
-			<span class="t" style="line-height:123px;"><?=$bottom['bottom'];?></span>
+			<span class="t" style="line-height:123px;"><?= $bottom['bottom']; ?></span>
 		</div>
 	</div>
 

@@ -17,7 +17,7 @@ $total=$db->count();
 $num=4;
 $pages=ceil($total/$num);
 $now=$_GET['p']??1;
-$start=($now-1)*$pages;
+$start=($now-1)*$num;
 
 				$rows=$db->all([]," LIMIT $start,$num");
 				foreach ($rows as $row) {
