@@ -19,9 +19,8 @@
 			<div id="cvr" style="position:absolute; width:99%; height:100%; margin:auto; z-index:9898;"></div>
 		</div>
 	</div>
-	<iframe style="display:none;" name="back" id="back"></iframe>
 	<div id="main">
-		<a title="" href="?">
+		<a title="<?=$title['text'];?>" href="?">
 			<div class="ti" style="background:url('img/<?=$title['name'];?>'); background-size:cover;"></div>
 			<!--標題-->
 		</a>

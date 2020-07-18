@@ -12,7 +12,15 @@
 				<?php
 				$table=$do;
 				$db=new DB($table);
-				$rows=$db->all();
+				
+//分頁相關參數，包含撈資料庫必須加limit
+$total=$db->count();
+$num=3;
+$pages=ceil($total/$num);
+$now=$_GET['p']??1;
+$start=($now-1)*$pages;
+
+				$rows=$db->all([]," LIMIT $start,$num");
 				foreach ($rows as $row) {
 				?>
 					<tr class="cent">
@@ -26,6 +34,24 @@
 				<?php } ?>
 			</tbody>
 		</table>
+		<div class="cent">
+			<?php
+// 往前
+if(($now-1)>0){
+	echo "<a href='?do=$table&p=".($now-1)."' style='text-decoration:none'> < </a>";
+}
+
+// 中間的頁數
+for($i=1;$i<=$pages;$i++){
+	$fontsize=($now==$i)?"35px":"25px";
+	echo "<a href='?do=$table&p=$i' style='text-decoration:none;font-size:$fontsize'>$i</a>";
+}
+// 往後
+if(($now+1)<=$pages){
+	echo "<a href='?do=$table&p=".($now+1)."' style='text-decoration:none'> > </a>";
+}
+			?>
+		</div>
 		<table style="margin-top:40px; width:70%;">
 			<tbody>
 				<tr>

@@ -14,7 +14,7 @@
 				<?php
 				$table=$do;
 				$db=new DB($table);
-				$rows=$db->all();
+				$rows=$db->all(['parent'=>0]);
 				foreach ($rows as $row) {
 				?>
 					<tr class="cent">
@@ -23,7 +23,7 @@
 						<td><?=$db->count(['parent'=>$row['id']]);?></td>
 						<td><input type="checkbox" name="sh[]" value="<?= $row['id']; ?>" <?=($row['sh']==1)?"checked":"";?>></td>
 						<td><input type="checkbox" name="del[]" value="<?= $row['id']; ?>"></td>
-						<td><input type="button" onclick="op('#cover','#cvr','modal/submenu.php?table=<?=$table;?>')" value="編輯次選單"></td>
+						<td><input type="button" onclick="op('#cover','#cvr','modal/submenu.php?table=<?=$table;?>&id=<?=$row['id'];?>')" value="編輯次選單"></td>
 						<input type="hidden" name="id[]" value="<?= $row['id']; ?>">
 						<input type="hidden" name="table" value="<?= $table; ?>">
 					</tr>
