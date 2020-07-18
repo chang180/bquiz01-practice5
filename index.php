@@ -29,26 +29,26 @@
 				<div id="menuput" class="dbor">
 					<!--主選單放此-->
 					<span class="t botli">主選單區</span>
-<?php
-$menu=$Menu->all(['parent'=>0,'sh'=>1]);
-foreach ($menu as $ma){
-echo "<div class='mainmu'>";
-echo "<a href='".$ma['text']."'>".$ma['name']."</a>";
+					<?php
+					$menu = $Menu->all(['parent' => 0, 'sh' => 1]);
+					foreach ($menu as $ma) {
+						echo "<div class='mainmu'>";
+						echo "<a href='" . $ma['text'] . "'>" . $ma['name'] . "</a>";
 
-$chk=$Menu->count(['parent'=>$ma['id']]);
-if($chk>0){
-	$sub=$Menu->all(['parent'=>$ma['id']]);
-	echo "<div class='mw'>";
-	foreach($sub as $su){
-		echo "<div class='mainmu2'>";
-		echo "<a href='".$su['text']."'>".$su['name']."</a>";
-		echo "</div>";
-	}
-	echo "</div>";
-}
-echo "</div>";
-}
-?>
+						$chk = $Menu->count(['parent' => $ma['id']]);
+						if ($chk > 0) {
+							$sub = $Menu->all(['parent' => $ma['id']]);
+							echo "<div class='mw'>";
+							foreach ($sub as $su) {
+								echo "<div class='mainmu2'>";
+								echo "<a href='" . $su['text'] . "'>" . $su['name'] . "</a>";
+								echo "</div>";
+							}
+							echo "</div>";
+						}
+						echo "</div>";
+					}
+					?>
 				</div>
 				<div class="dbor" style="margin:3px; width:95%; height:20%; line-height:100px;">
 					<span class="t">進站總人數 :
@@ -60,34 +60,43 @@ echo "</div>";
 			$file = "./front/" . $do . ".php";
 			include file_exists($file) ? $file : "./front/main.php";
 			?>
-
 			<div class="di di ad" style="height:540px; width:23%; padding:0px; margin-left:22px; float:left; ">
 				<!--右邊-->
-				<button style="width:100%; margin-left:auto; margin-right:auto; margin-top:2px; height:50px;" onclick="lo('?do=login')">管理登入</button>
+				<?php
+				if (empty($_SESSION['login'])) {
+				?>
+					<button style="width:100%; margin-left:auto; margin-right:auto; margin-top:2px; height:50px;" onclick="lo('?do=login')">管理登入</button>
+				<?php
+				} else {
+				?>
+					<button style="width:100%; margin-left:auto; margin-right:auto; margin-top:2px; height:50px;" onclick="lo('admin.php')">返回管理</button>
+				<?php
+				}
+				?>
 				<div style="width:89%; height:480px;" class="dbor">
 					<span class="t botli">校園映象區</span>
-<div class="cent" onclick="pp(1)"><img src="icon/up.jpg"></div>
-<?php
-$img=$Image->all(['sh'=>1]);
-foreach($img as $key=>$im){
-?>
-<div class="cent im" id="ssaa<?=$key;?>"><img src="img/<?=$im['name'];?>" style="width:150px;height:103px;border:3px solid orange;margin:3px"></div>
-<?php }
-?>
-<h3 class="cent" onclick="pp(2)"><img src="icon/dn.jpg"></h3>
-<?php
+					<div class="cent" onclick="pp(1)"><img src="icon/up.jpg"></div>
+					<?php
+					$img = $Image->all(['sh' => 1]);
+					foreach ($img as $key => $im) {
+					?>
+						<div class="cent im" id="ssaa<?= $key; ?>"><img src="img/<?= $im['name']; ?>" style="width:150px;height:103px;border:3px solid orange;margin:3px"></div>
+					<?php }
+					?>
+					<h3 class="cent" onclick="pp(2)"><img src="icon/dn.jpg"></h3>
+					<?php
 
-?>
+					?>
 					<script>
 						var nowpage = 0,
-							num = <?=count($img);?>;
+							num = <?= count($img); ?>;
 
 						function pp(x) {
 							var s, t;
 							if (x == 1 && nowpage - 1 >= 0) {
 								nowpage--;
 							}
-							if (x == 2 && (nowpage + 1)*3  <= num * 1 + 3) {
+							if (x == 2 && (nowpage + 1) * 3 <= num * 1 + 3) {
 								nowpage++;
 							}
 							$(".im").hide()
