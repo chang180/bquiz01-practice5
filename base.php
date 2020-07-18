@@ -16,8 +16,8 @@ class DB
     public function all(...$arg)
     {
         $sql = "SELECT * FROM $this->table ";
-        if (!empty($arg[0]) && is_array($arg[0])){
-        foreach ($arg[0] as $k => $v) $tmp[] = "`$k`='$v'";
+        if (!empty($arg[0]) && is_array($arg[0])) {
+            foreach ($arg[0] as $k => $v) $tmp[] = "`$k`='$v'";
             $sql .= " WHERE " . implode(" && ", $tmp);
         }
         $sql .= $arg[1] ?? "";
@@ -27,8 +27,8 @@ class DB
     public function count(...$arg)
     {
         $sql = "SELECT COUNT(*) FROM $this->table ";
-        if (!empty($arg[0]) && is_array($arg[0])){
-        foreach ($arg[0] as $k => $v)  $tmp[] = "`$k`='$v'";
+        if (!empty($arg[0]) && is_array($arg[0])) {
+            foreach ($arg[0] as $k => $v)  $tmp[] = "`$k`='$v'";
             $sql .= " WHERE " . implode(" && ", $tmp);
         }
         $sql .= $arg[1] ?? "";
@@ -55,19 +55,43 @@ class DB
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function q($sql){
+    public function q($sql)
+    {
         return $this->pdo->query($sql)->fetchAll();
     }
 
-    public function save($arg){
-        if(isset($arg['id'])){
-            foreach ($arg as $k=>$v) $tmp[]="`$k`='$v'";
-            $sql=sprintf("UPDATE SET %s %s WHERE `id`='%s'",$this->table,implode(",",$tmp),$arg['id']);
-        }else $sql=sprintf("INSERT INTO %s (`%s`)VALUES('%s')",$this->table,implode("`,`",array_keys($arg)),implode("','",$arg));
+    public function save($arg)
+    {
+        if (isset($arg['id'])) {
+            foreach ($arg as $k => $v) $tmp[] = "`$k`='$v'";
+            $sql = sprintf("UPDATE %s SET %s WHERE `id`='%s'", $this->table, implode(",", $tmp), $arg['id']);
+        } else $sql = sprintf("INSERT INTO %s (`%s`)VALUES('%s')", $this->table, implode("`,`", array_keys($arg)), implode("','", $arg));
         return $this->pdo->exec($sql);
     }
 }
 
-function to($url){
+function to($url)
+{
     header("location:$url");
+}
+
+$Title = new DB('title');
+$Ad = new DB('ad');
+$Admin = new DB('admin');
+$Total = new DB('total');
+$Bottom = new DB('bottom');
+$Image = new DB('image');
+$News = new DB('news');
+$Mvim = new DB('mvim');
+$Menu = new DB('menu');
+
+$title = $Title->find(['sh' => 1]);
+$bottom = $Bottom->find(1);
+$total = $Total->find(1);
+
+if (empty($_SESSION['visited'])) {
+    $_SESSION['visited'] = 1;
+    $total['total']++;
+    $Total->save($total);
+    $total = $Total->find(1);
 }
